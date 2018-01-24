@@ -33,7 +33,7 @@ public class Dictionary {
         sortedDictBySize = HashMultimap.create();
     }
 
-    public void initialize() throws IOException {
+    public String initialize() throws IOException {
         ClassLoader cl = Dictionary.class.getClassLoader();
         URL url = cl.getResource("3of6all.txt");
         List<String> words =Resources.readLines(url, Charsets.UTF_8);
@@ -41,33 +41,24 @@ public class Dictionary {
         Stream<String> strings = words.stream();
         stream.get().forEach(w-> sortedDictByLetter.put(w.toLowerCase().charAt(0),w.toLowerCase()));
         stream.get().forEach(w-> sortedDictBySize.put(w.length(),w.toLowerCase()));
-
         Random rm = new Random();
         Collection<String> iterable = sortedDictBySize.get(LENGTH);
         int ran = rm.nextInt(iterable.size()-1);
         this.newWord = Iterables.get(iterable,ran);
         HashSet<String> input = new HashSet<>(words);
         System.out.println("done initializing");
+        return newWord;
     }
 
     public boolean wordExists(String word) {
-
         Stopwatch stopwatch = Stopwatch.createStarted();
-
-
         Collection<String> collByLength = sortedDictBySize.get(word.length());
         Collection<String> collByLetter = sortedDictByLetter.get(word.charAt(0));
-
         Set<String> col1 = new HashSet<>(collByLength);
         Set<String> col2 = new HashSet<>(collByLetter);
         Set<String> col3 =  Sets.intersection(col1,col2);
-
-        System.out.println( col1.size());System.out.println( col2.size());
-        System.out.println( col3.size());
         stopwatch.stop(); // optional
-
         long millis = stopwatch.elapsed(MILLISECONDS);
-
         System.out.println(millis);
         return col3.contains(word);
     }
