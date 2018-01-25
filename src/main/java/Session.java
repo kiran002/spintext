@@ -6,12 +6,9 @@ public class Session {
     private  static int counter = 1;
     private static Map<Integer,Session> allSessions = new HashMap<>();
     private int gameId;
-    private Dictionary dictionary;
     private String mysteryWord;
+    private int score;
 
-    public Dictionary getDictionary() {
-        return dictionary;
-    }
 
     public String getMysteryWord() {
         return mysteryWord;
@@ -21,23 +18,28 @@ public class Session {
         return gameId;
     }
 
-    public Session() {
-        dictionary = new Dictionary();
+    public Session(String mysteryWord) {
         gameId= counter++;
+        this.mysteryWord = mysteryWord;
+        score=0;
         allSessions.put(gameId,this);
     }
 
+    public int updateScore(int score) {
+        this.score += score;
+        return this.score;
+    }
+
     public int startGame() {
-        try {
-            mysteryWord= dictionary.initialize();
             return gameId;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return -1;
-        }
+
     }
 
     public static Session getGame(int sessionID) {
         return allSessions.get(sessionID);
+    }
+
+    public int getScore() {
+        return score;
     }
 }

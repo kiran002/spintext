@@ -21,11 +21,9 @@ public class Dictionary {
     private Multimap<Character,String> sortedDictByLetter;
     private Multimap<Integer,String> sortedDictBySize;
     private HashSet<String> input;
-    private String newWord;
 
-    public String getNewWord() {
-        return  newWord;
-    }
+    private List<String> words;
+
 
 
     public Dictionary()  {
@@ -33,20 +31,23 @@ public class Dictionary {
         sortedDictBySize = HashMultimap.create();
     }
 
-    public String initialize() throws IOException {
+    public void initialize() throws IOException {
         ClassLoader cl = Dictionary.class.getClassLoader();
         URL url = cl.getResource("3of6all.txt");
-        List<String> words =Resources.readLines(url, Charsets.UTF_8);
+        words =Resources.readLines(url, Charsets.UTF_8);
         Supplier<Stream<String>> stream = words::stream;
         Stream<String> strings = words.stream();
         stream.get().forEach(w-> sortedDictByLetter.put(w.toLowerCase().charAt(0),w.toLowerCase()));
         stream.get().forEach(w-> sortedDictBySize.put(w.length(),w.toLowerCase()));
+
+    }
+
+    public String getWord() {
         Random rm = new Random();
         Collection<String> iterable = sortedDictBySize.get(LENGTH);
+        System.out.println(iterable.size());
         int ran = rm.nextInt(iterable.size()-1);
-        this.newWord = Iterables.get(iterable,ran);
-        HashSet<String> input = new HashSet<>(words);
-        System.out.println("done initializing");
+        String newWord = Iterables.get(iterable,ran);
         return newWord;
     }
 
