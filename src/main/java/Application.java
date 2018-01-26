@@ -44,8 +44,9 @@ public class Application {
             Session ss = Session.getGame(id);
 
             System.out.println("Actual word " + ss.getMysteryWord());
-            if (dict.wordExists(guess.toLowerCase())) {
+            if (!ss.wordAlreadyGuessed(guess.toLowerCase()) && dict.wordExists(guess.toLowerCase())) {
                 System.out.println(guess + " Exists");
+                ss.addNewGuess(guess.toLowerCase());
                 ss.updateScore(guess.length());
             }
             return ss.getScore();

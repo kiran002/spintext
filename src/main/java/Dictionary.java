@@ -24,8 +24,6 @@ public class Dictionary {
 
     private List<String> words;
 
-
-
     public Dictionary()  {
         sortedDictByLetter = HashMultimap.create();
         sortedDictBySize = HashMultimap.create();
