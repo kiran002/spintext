@@ -44,12 +44,28 @@ public class Application {
             Session ss = Session.getGame(id);
 
             System.out.println("Actual word " + ss.getMysteryWord());
+
             if (!ss.wordAlreadyGuessed(guess.toLowerCase()) && dict.wordExists(guess.toLowerCase())) {
                 System.out.println(guess + " Exists");
                 ss.addNewGuess(guess.toLowerCase());
                 ss.updateScore(guess.length());
             }
+
             return ss.getScore();
+        });
+
+        post("/sg/complete", (request, response) -> {
+            //request.queryParams();
+
+
+            int id = Integer.parseInt(request.queryParams("id"));
+
+            //System.out.println(request.queryParams());
+            // String guess = request.queryParams("input");
+
+            Session ss = Session.getGame(id);
+
+            return ss.gameCompleted();
         });
 
     }

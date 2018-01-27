@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Session {
-    private  static int counter = 1;
-    private static Map<Integer,Session> allSessions = new HashMap<>();
+    private static int counter = 1;
+    private static Map<Integer, Session> allSessions = new HashMap<>();
     private int gameId;
     private String mysteryWord;
     private int score;
@@ -16,6 +16,15 @@ public class Session {
     public void addNewGuess(String guess) {
         guessedWords.add(guess);
     }
+
+    // Game is completed, if either the mysterword is guessed or 20 points
+    public boolean gameCompleted() {
+        if(guessedWords.equals(mysteryWord) || score>=10) {
+            return true;
+        }
+        return false;
+    }
+
 
     public boolean wordAlreadyGuessed(String word) {
         return guessedWords.contains(word);
@@ -30,11 +39,11 @@ public class Session {
     }
 
     public Session(String mysteryWord) {
-        gameId= counter++;
+        gameId = counter++;
         this.mysteryWord = mysteryWord;
         guessedWords = new ArrayList<>();
-        score=0;
-        allSessions.put(gameId,this);
+        score = 0;
+        allSessions.put(gameId, this);
     }
 
     public int updateScore(int score) {
@@ -43,9 +52,10 @@ public class Session {
     }
 
     public int startGame() {
-            return gameId;
+        return gameId;
 
     }
+
 
     public static Session getGame(int sessionID) {
         return allSessions.get(sessionID);
