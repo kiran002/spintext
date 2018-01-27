@@ -1,7 +1,6 @@
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +16,7 @@ public class Session {
     private int score;
     private List<String> guessedWords;
 
-    public Session(String mysteryWord) {
+    Session(String mysteryWord) {
         gameId = counter++;
         this.mysteryWord = mysteryWord;
         guessedWords = new ArrayList<>();
@@ -31,10 +30,7 @@ public class Session {
     // Game is completed, if either the mysterword is guessed or 20 points
 
     public boolean gameCompleted() {
-        if(guessedWords.equals(mysteryWord) || score>=10) {
-            return true;
-        }
-        return false;
+        return guessedWords.contains(mysteryWord) || score >= 10;
     }
 
 

@@ -21,14 +21,14 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 public class Dictionary {
 
     private final Logger logger= LogManager.getLogger("Dictionary");
-    public static final int LENGTH = 10;
+    private static final int LENGTH = 10;
     private Multimap<Character,String> sortedDictByLetter;
     private Multimap<Integer,String> sortedDictBySize;
     private HashSet<String> input;
 
     private List<String> words;
 
-    public Dictionary()  {
+    Dictionary()  {
         sortedDictByLetter = HashMultimap.create();
         sortedDictBySize = HashMultimap.create();
     }
@@ -36,6 +36,10 @@ public class Dictionary {
     public void initialize() throws IOException {
         ClassLoader cl = Dictionary.class.getClassLoader();
         URL url = cl.getResource("3of6all.txt");
+        if(url==null) {
+            logger.error("Error reading dictionary");
+            throw new RuntimeException();
+        }
         words =Resources.readLines(url, Charsets.UTF_8);
         Supplier<Stream<String>> stream = words::stream;
         Stream<String> strings = words.stream();
@@ -49,8 +53,7 @@ public class Dictionary {
         Collection<String> iterable = sortedDictBySize.get(LENGTH);
         logger.info(iterable.size());
         int ran = rm.nextInt(iterable.size()-1);
-        String newWord = Iterables.get(iterable,ran);
-        return newWord;
+        return Iterables.get(iterable,ran);
     }
 
     public boolean wordExists(String word) {
