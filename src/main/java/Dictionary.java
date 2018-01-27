@@ -6,6 +6,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.io.Resources;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.net.URL;
@@ -17,6 +19,8 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 
 public class Dictionary {
+
+    private final Logger logger= LogManager.getLogger("Dictionary");
     public static final int LENGTH = 10;
     private Multimap<Character,String> sortedDictByLetter;
     private Multimap<Integer,String> sortedDictBySize;
@@ -43,7 +47,7 @@ public class Dictionary {
     public String getWord() {
         Random rm = new Random();
         Collection<String> iterable = sortedDictBySize.get(LENGTH);
-        System.out.println(iterable.size());
+        logger.info(iterable.size());
         int ran = rm.nextInt(iterable.size()-1);
         String newWord = Iterables.get(iterable,ran);
         return newWord;
@@ -58,16 +62,14 @@ public class Dictionary {
         Set<String> col3 =  Sets.intersection(col1,col2);
         stopwatch.stop(); // optional
         long millis = stopwatch.elapsed(MILLISECONDS);
-        System.out.println(millis);
+        logger.info(millis);
         return col3.contains(word);
     }
 
     public static String shuffle(String word) {
         String[] chars = word.split("");
         List<String> ash = Arrays.asList(chars);
-        System.out.println(ash.size());
         Collections.shuffle(ash);
-        System.out.println(ash);
         return ash.stream().collect(Collectors.joining());
     }
 
