@@ -43,8 +43,14 @@ public class Dictionary {
         words =Resources.readLines(url, Charsets.UTF_8);
         Supplier<Stream<String>> stream = words::stream;
         Stream<String> strings = words.stream();
-        stream.get().forEach(w-> sortedDictByLetter.put(w.toLowerCase().charAt(0),w.toLowerCase()));
-        stream.get().forEach(w-> sortedDictBySize.put(w.length(),w.toLowerCase()));
+        stream.get().forEach(w-> {
+            if(isValidWord(w))
+                sortedDictByLetter.put(w.toLowerCase().charAt(0),w.toLowerCase());
+        });
+        stream.get().forEach(w-> {
+            if(isValidWord(w))
+                sortedDictBySize.put(w.length(),w.toLowerCase());
+        });
 
     }
 
@@ -74,6 +80,10 @@ public class Dictionary {
         List<String> ash = Arrays.asList(chars);
         Collections.shuffle(ash);
         return ash.stream().collect(Collectors.joining());
+    }
+
+    private boolean isValidWord(String word) {
+        return !word.contains(" ");
     }
 
 }
